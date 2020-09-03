@@ -34,13 +34,16 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AShooterCharacter::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AShooterCharacter::LookUp);
+	PlayerInputComponent->BindAxis(TEXT("LookUpRate"), this, &AShooterCharacter::LookUpRate);
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &AShooterCharacter::LookRight);
+	PlayerInputComponent->BindAxis(TEXT("LookRightRate"), this, &AShooterCharacter::LookRightRate);
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Crouch"), IE_Pressed, this, &AShooterCharacter::ToggleCrouch);
 }
 
 void AShooterCharacter::MoveForward(float AxisValue)
 {
+	// Delta time is already provided by this function so we don't need to add it to calculation
 	AddMovementInput(GetActorForwardVector() * AxisValue);
 }
 
@@ -54,9 +57,21 @@ void AShooterCharacter::LookUp(float AxisValue)
 	AddControllerPitchInput(AxisValue);
 }
 
+void AShooterCharacter::LookUpRate(float AxisValue)
+{
+	// Delta time is already provided by this function so we don't need to add it to calculation
+	AddControllerPitchInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
+}
+
 void AShooterCharacter::LookRight(float AxisValue)
 {
 	AddControllerYawInput(AxisValue);
+}
+
+void AShooterCharacter::LookRightRate(float AxisValue)
+{
+	// Delta time is already provided by this function so we don't need to add it to calculation
+	AddControllerYawInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
 }
 
 void AShooterCharacter::ToggleCrouch()

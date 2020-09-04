@@ -18,14 +18,10 @@ void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (GunClass)
-	{
-		Gun = GetWorld()->SpawnActor<AGun>(GunClass);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("GunClass isn't selected for %s"), *GetName());
-	}
+	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None); // hide the original weapon, so we can assign the weapon we want
+	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	Gun->SetOwner(this);
 }
 
 // Called every frame

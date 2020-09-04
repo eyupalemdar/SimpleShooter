@@ -3,6 +3,7 @@
 
 #include "ShooterCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "SimpleShooter/Actors/Gun.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -17,6 +18,14 @@ void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (GunClass)
+	{
+		Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("GunClass isn't selected for %s"), *GetName());
+	}
 }
 
 // Called every frame

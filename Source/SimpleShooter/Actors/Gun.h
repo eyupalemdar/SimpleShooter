@@ -32,5 +32,8 @@ private:
 	UParticleSystem* ImpactEffect = nullptr;
 
 	UPROPERTY(EditAnywhere)
+	float Damage = 10.f;
+
+	UPROPERTY(EditAnywhere)
 	float MaxBulletRange = 1000.f;
 };

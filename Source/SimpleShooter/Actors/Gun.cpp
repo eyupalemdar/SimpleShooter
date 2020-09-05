@@ -27,26 +27,42 @@ void AGun::Tick(float DeltaTime)
 
 void AGun::PullTrigger()
 {
+	// Silah namlusuna efekt yerleþtir
 	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
 
+	// Bu silahý kullanan Pawn (Kullanýcý) ve onun Controller'ýný bul
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
 	if (OwnerPawn == nullptr) return;
 	AController* OwnerController = OwnerPawn->GetController();
 	if (OwnerController == nullptr) return;
 
+	// Kullanýcýnýn ViewPoint bilgisini ubl. (Ekrana bakýþ noktasý)
 	FVector Location;
 	FRotator Rotation;
 	OwnerController->GetPlayerViewPoint(Location, Rotation);
 
+	// Merminin gidebileceði son noktayý hesapla
 	FVector EndLocation = Location + Rotation.Vector() * MaxBulletRange;
 
-	FHitResult HitResult;
+	// Baþlangýç ve Bitiþ noktasý arasýnda bir LineTrace oluþtur ve 
+	// bak bakalým verilen Channel'a uygun olarak herhangi birþeye çarpýyor mu?
+	FHitResult Hit;
 	bool bSuccessfulHit = GetWorld()->LineTraceSingleByChannel(
-		HitResult, Location, EndLocation, ECollisionChannel::ECC_GameTraceChannel1);
+		Hit, Location, EndLocation, ECollisionChannel::ECC_GameTraceChannel1);
 
 	if (bSuccessfulHit)
 	{
-		FVector ShootDirection = -Rotation.Vector();
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, HitResult.Location, ShootDirection.Rotation());
+		FVector ShotDirection = -Rotation.Vector();
+		// Merminin çarptýðý noktada efekt oluþtur.
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
+		
+		// Merminin çarptýðý þey bir Aktör mü?
+		AActor* HitActor = Hit.GetActor();
+		if (HitActor)
+		{
+			// Aktörse ona Damage uygula
+			FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
+			HitActor->TakeDamage(Damage, DamageEvent, OwnerController, this);
+		}
 	}
 }

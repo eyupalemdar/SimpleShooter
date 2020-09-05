@@ -18,6 +18,8 @@ void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Health = MaxHealth;
+
 	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None); // hide the original weapon, so we can assign the weapon we want
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
@@ -96,4 +98,16 @@ void AShooterCharacter::ToggleCrouch()
 void AShooterCharacter::Shoot()
 {
 	Gun->PullTrigger();
+}
+
+float AShooterCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageToApply = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+
+	DamageToApply = FMath::Min(Health, DamageToApply);
+	Health -= DamageToApply;
+
+	UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
+
+	return DamageToApply;
 }

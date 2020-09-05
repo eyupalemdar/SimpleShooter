@@ -29,5 +29,8 @@ private:
 	UParticleSystem* MuzzleFlash = nullptr;
 
 	UPROPERTY(EditAnywhere)
+	UParticleSystem* ImpactEffect = nullptr;
+
+	UPROPERTY(EditAnywhere)
 	float MaxBulletRange = 1000.f;
 };

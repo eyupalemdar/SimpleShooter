@@ -1,7 +1,6 @@
 #include "Gun.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DrawDebugHelpers.h"
 
 AGun::AGun()
 {
@@ -47,6 +46,7 @@ void AGun::PullTrigger()
 
 	if (bSuccessfulHit)
 	{
-		DrawDebugPoint(GetWorld(), HitResult.Location, 10, FColor::Red, true);
+		FVector ShootDirection = -Rotation.Vector();
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, HitResult.Location, ShootDirection.Rotation());
 	}
 }

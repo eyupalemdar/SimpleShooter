@@ -30,6 +30,7 @@ private:
 	void LookRight(float AxisValue);
 	void LookRightRate(float AxisValue);
 	void ToggleCrouch();
+	void Shoot();
 
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 10.f;

@@ -21,7 +21,7 @@ void AShooterCharacter::BeginPlay()
 	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None); // hide the original weapon, so we can assign the weapon we want
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
-	Gun->SetOwner(this);
+	Gun->SetOwner(this); // then we can reach the Shooter Character from Gun
 }
 
 // Called every frame

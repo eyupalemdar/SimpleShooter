@@ -111,3 +111,8 @@ float AShooterCharacter::TakeDamage(float Damage, struct FDamageEvent const& Dam
 
 	return DamageToApply;
 }
+
+bool AShooterCharacter::IsDead() const
+{
+	return Health <= 0;
+}

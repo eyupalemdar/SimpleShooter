@@ -18,6 +18,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	void Shoot();
 
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
@@ -34,7 +35,6 @@ private:
 	void LookRight(float AxisValue);
 	void LookRightRate(float AxisValue);
 	void ToggleCrouch();
-	void Shoot();
 
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 10.f;

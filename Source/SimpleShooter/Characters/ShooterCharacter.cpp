@@ -2,6 +2,7 @@
 
 
 #include "ShooterCharacter.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "SimpleShooter/Actors/Gun.h"
 
@@ -107,7 +108,11 @@ float AShooterCharacter::TakeDamage(float Damage, struct FDamageEvent const& Dam
 	DamageToApply = FMath::Min(Health, DamageToApply);
 	Health -= DamageToApply;
 
-	UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
+	if (IsDead())
+	{
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 
 	return DamageToApply;
 }

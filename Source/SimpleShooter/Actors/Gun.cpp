@@ -47,8 +47,13 @@ void AGun::PullTrigger()
 	// Baþlangýç ve Bitiþ noktasý arasýnda bir LineTrace oluþtur ve 
 	// bak bakalým verilen Channel'a uygun olarak herhangi birþeye çarpýyor mu?
 	FHitResult Hit;
+
+	FCollisionQueryParams CollisionQueryParams;
+	CollisionQueryParams.AddIgnoredActor(this); // ignore gun's itself
+	CollisionQueryParams.AddIgnoredActor(GetOwner()); // ignore the user or AI who carry the gun
+
 	bool bSuccessfulHit = GetWorld()->LineTraceSingleByChannel(
-		Hit, Location, EndLocation, ECollisionChannel::ECC_GameTraceChannel1);
+		Hit, Location, EndLocation, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams);
 
 	if (bSuccessfulHit)
 	{

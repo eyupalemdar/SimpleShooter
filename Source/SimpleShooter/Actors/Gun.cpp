@@ -29,6 +29,7 @@ void AGun::PullTrigger()
 {
 	// Silah namlusuna efekt yerleþtir
 	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
+	UGameplayStatics::SpawnSoundAttached(MuzzleSound, Mesh, TEXT("MuzzleFlashSocket"));
 
 	FHitResult Hit;
 	FVector ShotDirection;
@@ -38,6 +39,7 @@ void AGun::PullTrigger()
 	{
 		// Merminin çarptýðý noktada efekt oluþtur.
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactSound, Hit.Location, ShotDirection.Rotation());
 		
 		// Merminin çarptýðý þey bir Aktör mü?
 		AActor* HitActor = Hit.GetActor();
@@ -89,6 +91,7 @@ AController* AGun::GetOwnerController() const
 {
 	// Bu silahý kullanan Pawn (Kullanýcý) ve onun Controller'ýný bul
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
-	if (OwnerPawn == nullptr) return nullptr;
+	if (OwnerPawn == nullptr) 
+		return nullptr;
 	return OwnerPawn->GetController();
 }

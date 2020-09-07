@@ -29,7 +29,13 @@ private:
 	UParticleSystem* MuzzleFlash = nullptr;
 
 	UPROPERTY(EditAnywhere)
+	USoundBase* MuzzleSound = nullptr;
+
+	UPROPERTY(EditAnywhere)
 	UParticleSystem* ImpactEffect = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* ImpactSound = nullptr;
 
 	UPROPERTY(EditAnywhere)
 	float Damage = 10.f;

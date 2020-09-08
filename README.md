@@ -1,2 +1,2 @@
 # SimpleShooter
-SimpleShooter is a First-Person Shooter game writeen with Unreal Engine C++
+SimpleShooter is a First-Person Shooter game written with Unreal Engine C++
